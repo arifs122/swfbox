@@ -1,17 +1,17 @@
 $ node bin/swfbox.js docs/demo/swfs --format text --no-color
   swfbox docs/demo/swfs — 10 files (2 broken)
       56 B  —                       broken    Corrupt Legacy.swf
-      48 B  320×240          18fps  AS2       Loading Loop.swf
+    1.4 KB  320×240          18fps  AS2       Loading Loop.swf
       40 B  —                       broken    LZMA Bundle.swf
-     706 B  550×400          24fps  AS2       Neon Bolt.swf
-     422 B  640×480          30fps  AS3       Pocket Quiz.swf
-      43 B  240×320          12fps  ?         Portrait Card.swf
-      31 B  100×100           6fps  AS2       Retro Pixel.swf
-     438 B  800×600          30fps  AS3       Space Cadet.swf
-      28 B  468×60           12fps  ?         Tiny Banner.swf
-     436 B  1280×720         25fps  AS3       Widescreen Intro.swf
+    1022 B  550×400          24fps  AS2       Neon Bolt.swf
+    1.4 KB  640×480          30fps  AS3       Pocket Quiz.swf
+     119 B  240×320          12fps  ?         Portrait Card.swf
+      96 B  100×100           6fps  AS2       Retro Pixel.swf
+    1.0 KB  800×600          30fps  AS3       Space Cadet.swf
+      74 B  468×60           12fps  ?         Tiny Banner.swf
+     641 B  1280×720         25fps  AS3       Widescreen Intro.swf
 
-8 readable · 2 unreadable · 2.2 KB total
+8 readable · 2 unreadable · 5.8 KB total
 
 $ node bin/swfbox.js inspect "docs/demo/swfs/Neon Bolt.swf" --no-color
 
@@ -25,16 +25,16 @@ $ node bin/swfbox.js inspect "docs/demo/swfs/Neon Bolt.swf" --no-color
   Frames        12
   Signature     FWS (uncompressed)
   SWF version   v10
-  Declared size 706 B
-  On disk       706 B
+  Declared size 1022 B
+  On disk       1022 B
   ActionScript  AS2
   Background    #0b1020
   Network       not declared
 
   Tags
-  Parsed          6
-  Sprites         1
-  Shapes          1
+  Parsed          42
+  Sprites         0
+  Shapes          2
   Sounds          0
   Video           0
 

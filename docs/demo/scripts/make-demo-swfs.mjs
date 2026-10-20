@@ -148,6 +148,112 @@ function swf({ signature = "FWS", version = 10, width, height, fps, frames, tags
 }
 
 /* ------------------------------------------------------------------ */
+/* Visible content: real DefineShape + PlaceObject2 animation          */
+/* ------------------------------------------------------------------ */
+
+const END_SHAPE = (bits) => bits.ub(0, 1).ub(0, 1).ub(0, 1).ub(0, 1).ub(0, 1).ub(0, 1);
+
+function straightEdge(bits, dx, dy) {
+  const n = Math.max(2, signedBits(dx), signedBits(dy));
+  bits.ub(1, 1); // type flag: edge
+  bits.ub(1, 1); // straight
+  bits.ub(n - 2, 4); // the field stores (bits - 2)
+  if (dx === 0 || dy === 0) {
+    bits.ub(0, 1); // general line: no
+    const vertical = dy !== 0;
+    bits.ub(vertical ? 1 : 0, 1); // VertLineFlag — a single direction bit
+    if (vertical) bits.sb(dy, n);
+    else bits.sb(dx, n);
+  } else {
+    bits.ub(1, 1); // general line
+    bits.sb(dx, n);
+    bits.sb(dy, n);
+  }
+}
+
+/** A filled rectangle, as a real SWF shape the player can draw. */
+function solidShape(shapeId, widthPx, heightPx, [r, g, b]) {
+  const w = Math.round(widthPx * 20);
+  const h = Math.round(heightPx * 20);
+  const styles = Buffer.from([1, 0x00, r, g, b, 0]); // one solid fill, no lines
+  const bits = new BitWriter();
+  bits.ub(1, 4); // NumFillBits
+  bits.ub(0, 4); // NumLineBits
+  // StyleChangeRecord: MoveTo(0,0); set BOTH fill sides so the interior is
+  // painted regardless of the path winding order.
+  bits.ub(0, 1).ub(0, 1).ub(0, 1).ub(1, 1).ub(1, 1).ub(1, 1);
+  bits.ub(0, 5); // MoveBits 0 -> deltas are zero
+  bits.ub(1, 1); // FillStyle0 index
+  bits.ub(1, 1); // FillStyle1 index
+  straightEdge(bits, w, 0);
+  straightEdge(bits, 0, h);
+  straightEdge(bits, -w, 0);
+  straightEdge(bits, 0, -h);
+  END_SHAPE(bits);
+
+  const shapeIdBytes = Buffer.alloc(2);
+  shapeIdBytes.writeUInt16LE(shapeId, 0);
+  return tag(2, Buffer.concat([shapeIdBytes, rect(widthPx, heightPx), styles, bits.buffer()]));
+}
+
+function matrix(tx, ty) {
+  const bits = new BitWriter();
+  bits.ub(0, 1); // has scale
+  bits.ub(0, 1); // has rotate
+  const n = Math.max(1, signedBits(tx), signedBits(ty));
+  bits.ub(n, 5);
+  bits.sb(tx, n);
+  bits.sb(ty, n);
+  return bits.buffer();
+}
+
+function placeObject({ depth, characterId, tx, ty, move = false }) {
+  const flags = (characterId ? 0x02 : 0) | 0x04 | (move ? 0x01 : 0);
+  const parts = [Buffer.from([flags])];
+  const depthBytes = Buffer.alloc(2);
+  depthBytes.writeUInt16LE(depth, 0);
+  parts.push(depthBytes);
+  if (characterId) {
+    const idBytes = Buffer.alloc(2);
+    idBytes.writeUInt16LE(characterId, 0);
+    parts.push(idBytes);
+  }
+  parts.push(matrix(tx, ty));
+  return tag(26, Buffer.concat(parts));
+}
+
+const showFrame = () => tag(1, Buffer.alloc(0));
+
+/**
+ * Build a genuinely visible animation: bright rectangles bouncing around the
+ * stage. The demo is what people click on, so it has to show motion rather
+ * than a blank coloured field.
+ */
+function animation({ width, height, frames, shapes }) {
+  const tags = shapes.map((shape, index) => solidShape(index + 1, shape.w, shape.h, shape.color));
+
+  for (let frame = 0; frame < frames; frame += 1) {
+    const t = frames > 1 ? frame / (frames - 1) : 0;
+    shapes.forEach((shape, index) => {
+      const phase = t * Math.PI * 2 + index * (Math.PI / 2);
+      const spanX = Math.max(1, width - shape.w);
+      const spanY = Math.max(1, height - shape.h);
+      tags.push(
+        placeObject({
+          depth: index + 1,
+          characterId: frame === 0 ? index + 1 : null,
+          tx: Math.round(((Math.sin(phase) + 1) / 2) * spanX * 20),
+          ty: Math.round(((Math.cos(phase * 1.35) + 1) / 2) * spanY * 20),
+          move: frame > 0,
+        }),
+      );
+    });
+    tags.push(showFrame());
+  }
+  return tags;
+}
+
+/* ------------------------------------------------------------------ */
 /* The archive                                                         */
 /* ------------------------------------------------------------------ */
 
@@ -168,8 +274,15 @@ const demoFiles = [
           description: "A tiny AS2 title card with a violet-to-cyan bolt. Generated, not downloaded.",
         }),
         doAction(),
-        sprite(),
-        shape(),
+        ...animation({
+          width: 550,
+          height: 400,
+          frames: 12,
+          shapes: [
+            { w: 170, h: 120, color: [124, 92, 255] },
+            { w: 110, h: 110, color: [34, 211, 238] },
+          ],
+        }),
       ],
     }),
   },
@@ -191,9 +304,15 @@ const demoFiles = [
           description: "A compressed AS3 sample with sprites, shapes and sound tags.",
         }),
         doAbc(),
-        sprite(),
-        shape(),
-        sound(),
+        ...animation({
+          width: 800,
+          height: 600,
+          frames: 48,
+          shapes: [
+            { w: 220, h: 140, color: [34, 211, 238] },
+            { w: 120, h: 120, color: [244, 114, 182] },
+          ],
+        }),
       ],
     }),
   },
@@ -204,7 +323,15 @@ const demoFiles = [
       height: 60,
       fps: 12,
       frames: 1,
-      tags: [background(255, 255, 255)],
+      tags: [
+        background(255, 255, 255),
+        ...animation({
+          width: 468,
+          height: 60,
+          frames: 1,
+          shapes: [{ w: 468, h: 28, color: [124, 92, 255] }],
+        }),
+      ],
     }),
   },
   {
@@ -214,7 +341,19 @@ const demoFiles = [
       height: 240,
       fps: 18,
       frames: 60,
-      tags: [background(16, 12, 30), doAction(), sprite(), sound()],
+      tags: [
+        background(16, 12, 30),
+        doAction(),
+        ...animation({
+          width: 320,
+          height: 240,
+          frames: 60,
+          shapes: [
+            { w: 90, h: 90, color: [34, 211, 238] },
+            { w: 52, h: 52, color: [124, 92, 255] },
+          ],
+        }),
+      ],
     }),
   },
   {
@@ -236,6 +375,15 @@ const demoFiles = [
         }),
         doAbc(),
         shape(),
+        ...animation({
+          width: 640,
+          height: 480,
+          frames: 90,
+          shapes: [
+            { w: 200, h: 120, color: [244, 114, 182] },
+            { w: 80, h: 80, color: [34, 211, 238] },
+          ],
+        }),
       ],
     }),
   },
@@ -246,7 +394,15 @@ const demoFiles = [
       height: 320,
       fps: 12,
       frames: 5,
-      tags: [background(250, 244, 232), sprite(), shape()],
+      tags: [
+        background(250, 244, 232),
+        ...animation({
+          width: 240,
+          height: 320,
+          frames: 5,
+          shapes: [{ w: 120, h: 120, color: [124, 92, 255] }],
+        }),
+      ],
     }),
   },
   {
@@ -267,8 +423,15 @@ const demoFiles = [
           description: "A 16:9 AS3 intro with a video tag and an XMP packet.",
         }),
         doAbc(),
-        video(),
-        sprite(),
+        ...animation({
+          width: 1280,
+          height: 720,
+          frames: 10,
+          shapes: [
+            { w: 320, h: 180, color: [124, 92, 255] },
+            { w: 120, h: 120, color: [34, 211, 238] },
+          ],
+        }),
       ],
     }),
   },
@@ -279,7 +442,16 @@ const demoFiles = [
       height: 100,
       fps: 6,
       frames: 3,
-      tags: [background(255, 0, 128), doAction()],
+      tags: [
+        background(255, 0, 128),
+        doAction(),
+        ...animation({
+          width: 100,
+          height: 100,
+          frames: 3,
+          shapes: [{ w: 40, h: 40, color: [255, 255, 255] }],
+        }),
+      ],
     }),
   },
   {

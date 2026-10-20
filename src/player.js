@@ -193,6 +193,7 @@ function mountRuffle() {
     player.style.width = "100%";
     player.style.height = "100%";
     player.setAttribute("letterbox", "on");
+    if ("config" in player) player.config = { ...(player.config || {}), autoplay: "on" };
     stage.replaceChildren(player);
     try {
       const loading = player.ruffle().load(watchSrc);

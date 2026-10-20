@@ -918,7 +918,7 @@ function fillSide(entry) {
     link.href = entry.playerUrl;
     actions.appendChild(link);
   }
-  if (DATA.mode === "static") {
+  if (DATA.mode === "static" && location.protocol === "file:") {
     actions.appendChild(el("p", "hint", "Opened from a local file? Browsers block file:// SWF reads. Run swfbox serve for guaranteed playback."));
   }
   if (DATA.ruffle && DATA.ruffle.kind !== "local" && DATA.mode === "serve") {
@@ -998,6 +998,7 @@ async function mount(entry, token) {
     player.style.width = "100%";
     player.style.height = "100%";
     player.setAttribute("letterbox", "on");
+    if ("config" in player) player.config = { ...(player.config || {}), autoplay: "on" };
     stage.replaceChildren(player);
     await player.ruffle().load(entry.src);
   } catch (error) {
