@@ -50,3 +50,9 @@ All maintainers are obligated to respect the privacy and security of the reporte
 ## Attribution
 
 This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org), version 2.1, available at <https://www.contributor-covenant.org/version/2/1/code_of_conduct.html>.
+
+## License of this document
+
+The Contributor Covenant is licensed under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). This adaptation is
+shared under the same license, with attribution to the original authors.

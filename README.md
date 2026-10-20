@@ -317,3 +317,7 @@ Security issues: see [SECURITY.md](SECURITY.md). Please do not attach real propr
 [MIT](LICENSE) © 2026 arifs122.
 
 Ruffle is a separate project, licensed MIT OR Apache-2.0. `swfbox` does not redistribute Ruffle in this repository; `--fetch-ruffle` downloads it from the npm registry at your explicit request.
+
+"Adobe", "Flash" and "Adobe Flash" are trademarks of Adobe Inc. `swfbox` is an
+independent project, is not affiliated with Adobe, and does not contain or
+redistribute any Adobe software. It reads and indexes files you already own.
