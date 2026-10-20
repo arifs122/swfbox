@@ -1,0 +1,25 @@
+# Dependencies (the project has none, but keep the folder out of git)
+node_modules/
+package-lock.json
+npm-debug.log*
+
+# Vendored Ruffle downloaded by `swfbox --fetch-ruffle`
+.swfbox/
+
+# Generated reports and temporary test output
+swfbox-library.html
+ci-library.html
+ci-library.json
+health.json
+server.log
+.tmp/
+coverage/
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+.idea/
+.vscode/

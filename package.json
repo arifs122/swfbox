@@ -1,0 +1,56 @@
+{
+  "name": "swfbox",
+  "version": "0.1.0",
+  "description": "Your offline Flash library. Point it at a folder of .swf files — browse, inspect and play them through Ruffle.",
+  "type": "module",
+  "bin": {
+    "swfbox": "bin/swfbox.js"
+  },
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./swf": "./src/swf.js",
+    "./scan": "./src/scan.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "CODE_OF_CONDUCT.md",
+    "SECURITY.md",
+    "docs/screenshots/"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test",
+    "demo": "node docs/demo/scripts/make-demo-swfs.mjs"
+  },
+  "keywords": [
+    "swf",
+    "flash",
+    "ruffle",
+    "library",
+    "offline",
+    "archive",
+    "metadata",
+    "cli",
+    "swf-parser"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arifs122/swfbox.git"
+  },
+  "author": "arifs122",
+  "homepage": "https://github.com/arifs122/swfbox",
+  "bugs": {
+    "url": "https://github.com/arifs122/swfbox/issues"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

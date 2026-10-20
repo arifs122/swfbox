@@ -1,0 +1,17 @@
+* text=auto eol=lf
+
+# SWF and Ruffle binaries
+*.swf binary
+*.wasm binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+
+# Keep generated docs stable across platforms
+docs/demo/demo.html text eol=lf
+docs/demo/cli.txt text eol=lf
+
+# Shell entry points
+bin/swfbox.js text eol=lf
