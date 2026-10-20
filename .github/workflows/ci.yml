@@ -1,0 +1,98 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [18, 20, 22]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Validate package (no dependencies)
+        run: npm install --ignore-scripts --no-audit --no-fund --package-lock=false
+
+      - name: Test
+        run: npm test
+
+      - name: Demo generator runs
+        if: matrix.node == 20
+        run: |
+          npm run demo
+          test -s docs/demo/demo.html
+          test -s docs/demo/cli.txt
+          test "$(find docs/demo/swfs -name '*.swf' | wc -l)" -eq 10
+
+      - name: Scan the demo archive
+        if: matrix.node == 20
+        run: |
+          node bin/swfbox.js docs/demo/swfs -o ci-library.html --no-color
+          test -s ci-library.html
+          node bin/swfbox.js docs/demo/swfs --format json > ci-library.json
+          node -e "const l=require('./ci-library.json'); if(l.counts.total!==10||l.counts.broken!==2) process.exit(1)"
+
+      - name: Inspect a good and a broken file
+        if: matrix.node == 20
+        run: |
+          node bin/swfbox.js inspect "docs/demo/swfs/Neon Bolt.swf" --no-color
+          if node bin/swfbox.js inspect "docs/demo/swfs/Corrupt Legacy.swf" --no-color; then exit 1; fi
+
+      - name: Reports are self-contained
+        if: matrix.node == 20
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const checks = ['docs/demo/demo.html', 'ci-library.html'];
+          let failed = false;
+          for (const file of checks) {
+            const html = fs.readFileSync(file, 'utf8');
+            const urls = [...html.matchAll(/https?:\/\/[^\s"'<>)\\]+/g)].map((m) => m[0]);
+            const externalTags = [...html.matchAll(/<(?:script|link|img|iframe)\b[^>]*(?:src|href)\s*=\s*["'](?:https?:)?\/\//gi)];
+            if (urls.length || externalTags.length) {
+              console.error(`${file} has external references:`, urls, externalTags.map((m) => m[0]));
+              failed = true;
+            }
+            if (/@import\s+url\(\s*["']?https?:/i.test(html)) {
+              console.error(`${file} imports an external stylesheet`);
+              failed = true;
+            }
+          }
+          if (failed) process.exit(1);
+          console.log('No external references in generated reports.');
+          NODE
+
+      - name: Smoke-test the server
+        if: matrix.node == 20
+        run: |
+          node bin/swfbox.js serve docs/demo/swfs --port 18099 --no-color > server.log 2>&1 &
+          SERVER_PID=$!
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:18099/health > health.json; then break; fi
+            sleep 0.25
+          done
+          cat health.json
+          node -e "const h=require('./health.json'); if(!h.ok||h.files!==10) process.exit(1)"
+          curl -fsS http://127.0.0.1:18099/ > /dev/null
+          curl -fsS "http://127.0.0.1:18099/player?f=Neon%20Bolt.swf" > /dev/null
+          curl -fsS http://127.0.0.1:18099/swf/Neon%20Bolt.swf > /dev/null
+          if curl -fsS "http://127.0.0.1:18099/swf/..%2Fpackage.json" > /dev/null; then echo "traversal leaked"; exit 1; fi
+          kill $SERVER_PID
+          wait $SERVER_PID || true
+

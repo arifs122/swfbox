@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security report
+    url: https://github.com/arifs122/swfbox/security/advisories/new
+    about: Report path traversal, XSS, archive parsing or download issues privately.
+  - name: Ruffle questions and bugs
+    url: https://github.com/ruffle-rs/ruffle/issues
+    about: Rendering, ActionScript and audio problems belong to Ruffle, the emulator.
+  - name: Documentation and demo
+    url: https://github.com/arifs122/swfbox#readme
+    about: Read the README, offline story and demo commands first.

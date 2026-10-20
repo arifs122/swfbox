@@ -1,0 +1,93 @@
+name: Bug report
+description: Something crashed, parsed incorrectly, or failed to serve
+title: "[bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a problem.
+
+        Please do **not** attach proprietary SWF files. A minimal synthetic reproduction (or just the header bytes and error message) is far more useful. Security issues go to the private advisory form, not here.
+  - type: input
+    id: version
+    attributes:
+      label: swfbox version
+      description: Output of `swfbox --version`
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node.js version
+      description: Output of `node --version`
+      placeholder: v20.11.0
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Other / container
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Parser / inspect output
+        - Folder scan
+        - Static HTML report
+        - Server / player
+        - Ruffle resolution or --fetch-ruffle
+        - CLI arguments / exit codes
+        - Documentation
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command
+      description: The exact command you ran, with paths redacted if needed.
+      render: shell
+      placeholder: node bin/swfbox.js inspect "docs/demo/swfs/Neon Bolt.swf"
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual output
+      description: Paste stdout/stderr. Remove personal paths. Do not paste a stack trace instead of the message.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: swf
+    attributes:
+      label: SWF details (if parsing is involved)
+      description: Signature (FWS/CWS/ZWS), size, SWF version, and whether the file opens in Ruffle. A synthetic file or hex dump of the first 64 bytes helps.
+      render: text
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I ran the latest version and `npm test` passes on a clean checkout.
+          required: false
+        - label: This is not a security issue (those go to the private advisory form).
+          required: true
+        - label: I have not attached a proprietary SWF file.
+          required: true

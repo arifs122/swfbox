@@ -1,0 +1,57 @@
+name: Feature request
+description: Suggest a capability for the library, scanner, parser, player or CLI
+title: "[feature] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Remember the positioning: `swfbox` is a library and launcher, not a Flash emulator. Rendering and ActionScript belong to Ruffle. Features that make archives easier to browse, inspect or launch are in scope.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      description: Describe the archive, workflow or annoyance, not just the proposed flag.
+      placeholder: I have 4,000 SWFs across yearly folders and want to find files that declare network access.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Command, option, output or API you have in mind.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Existing tools, scripts or workarounds.
+    validations:
+      required: false
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Parser / metadata
+        - Folder scan
+        - Static report
+        - Server / player
+        - Ruffle setup
+        - CLI / output
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Project constraints
+      description: These are intentional and unlikely to change.
+      options:
+        - label: This can be implemented with Node built-ins only (zero runtime dependencies).
+          required: false
+        - label: This does not require swfbox to become an emulator or execute SWF code.
+          required: false
+        - label: This works offline by default (network only behind an explicit flag).
+          required: false
