@@ -41,6 +41,10 @@ test("static library is self-contained and has the expected controls", async () 
   });
   const html = renderHtml(library);
 
+  // The report is meant to be published: it must not carry the author's local path.
+  assert.equal(html.includes(library.root), false, "the absolute scan root must not be embedded");
+  assert.equal(/[A-Za-z]:\\/.test(html), false, "no Windows drive paths in the report");
+
   assert.match(html, /^<!doctype html>/i);
   assert.match(html, /Every SWF/);
   assert.match(html, /id="search"/);

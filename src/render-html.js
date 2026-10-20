@@ -485,7 +485,7 @@ function clientPayload(library) {
     version: library.version,
     mode: library.mode,
     theme: library.theme,
-    root: library.root,
+    root: library.rootName,
     rootName: library.rootName,
     generatedAt: library.generatedAt,
     counts: library.counts,
@@ -563,7 +563,7 @@ export function renderHtml(library) {
       <p class="eyebrow">${library.mode === "serve" ? "Served locally" : "Static archive report"}</p>
       <h1>Every SWF,<br><span class="grad-text">one shelf.</span></h1>
       <p class="lede">${library.counts.total === 0 ? "No SWF files were found here yet." : `${library.counts.readable} playable ${library.counts.readable === 1 ? "title" : "titles"} indexed from <strong>${escapeHtml(library.rootName)}</strong>. Search, inspect and play through Ruffle — no account, no cloud, no telemetry.`}</p>
-      <div class="hero-path">${boltSvg()}<span>${escapeHtml(library.root)}</span></div>
+      <div class="hero-path">${boltSvg()}<span>${escapeHtml(library.rootName)}</span></div>
     </div>
     <div class="stats">
       ${statBlock(String(library.counts.total), "SWF files")}

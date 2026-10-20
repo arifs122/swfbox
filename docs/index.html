@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>swfbox — your offline Flash library</title>
+<meta name="description" content="Point swfbox at a folder of .swf files: it reads their metadata, builds a browsable library and plays them through Ruffle.">
+<meta property="og:title" content="swfbox">
+<meta property="og:description" content="Your offline Flash library. Browse, inspect and play a folder of SWF files through Ruffle.">
+<meta property="og:image" content="screenshots/library.png">
+<style>
+  :root{--bg:#07070e;--panel:rgba(255,255,255,.04);--border:rgba(255,255,255,.1);--text:#eceef7;--muted:#9ba1b8;--faint:#6d7391}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Inter,Arial,sans-serif;line-height:1.55}
+  .glow{position:fixed;border-radius:50%;filter:blur(100px);opacity:.22;pointer-events:none}
+  .a{width:560px;height:560px;top:-240px;left:-140px;background:#7c5cff}
+  .b{width:520px;height:520px;top:80px;right:-200px;background:#22d3ee;opacity:.2}
+  main{position:relative;max-width:960px;margin:0 auto;padding:72px 24px 80px}
+  .eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);font-weight:600;margin:0 0 16px}
+  h1{margin:0;font-size:clamp(38px,7vw,66px);line-height:1.02;letter-spacing:-.035em;font-weight:800;
+     background:linear-gradient(96deg,#7c5cff 0%,#22d3ee 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{color:var(--muted);font-size:18px;max-width:64ch;margin:18px 0 0}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 0}
+  .btn{display:inline-block;padding:13px 22px;border-radius:12px;font-weight:700;text-decoration:none;font-size:15px}
+  .primary{background:linear-gradient(96deg,#7c5cff,#22d3ee);color:#06060c}
+  .ghost{border:1px solid var(--border);background:var(--panel);color:var(--text)}
+  .shot{margin:46px 0 0;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 30px 80px -40px #000}
+  .shot img{display:block;width:100%}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:44px}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px}
+  .card h3{margin:0 0 8px;font-size:15px}
+  .card p{margin:0;color:var(--muted);font-size:14px}
+  pre{background:#0c0c18;border:1px solid var(--border);border-radius:12px;padding:16px 18px;overflow-x:auto;margin:14px 0 0}
+  code{font-family:ui-monospace,Consolas,monospace;font-size:13.5px;color:#d7dbe8}
+  .note{margin-top:18px;color:var(--faint);font-size:13px}
+  .foot{margin-top:56px;padding-top:24px;border-top:1px solid var(--border);color:var(--faint);font-size:13px;display:flex;gap:18px;flex-wrap:wrap}
+  .foot a{color:var(--muted)}
+  @media (prefers-reduced-motion:no-preference){.shot{animation:rise .7s cubic-bezier(.22,1,.36,1) both}@keyframes rise{from{opacity:0;transform:translateY(16px)}}}
+</style>
+</head>
+<body>
+<div class="glow a"></div><div class="glow b"></div>
+<main>
+  <p class="eyebrow">Live demo · plays in your browser</p>
+  <h1>Every SWF,<br>one shelf.</h1>
+  <p class="lede"><strong>swfbox</strong> reads a folder of old <code>.swf</code> files itself — stage size, frame rate,
+    ActionScript version, embedded title and creator — then gives you a searchable library and plays any title through
+    Ruffle. Nothing is uploaded.</p>
+
+  <div class="cta">
+    <a class="btn primary" href="play.html">Open the live library →</a>
+    <a class="btn ghost" href="https://github.com/arifs122/swfbox">Source on GitHub</a>
+    <a class="btn ghost" href="https://www.npmjs.com/package/swfbox">npm</a>
+  </div>
+
+  <pre><code>npx swfbox serve ~/old-flash --open</code></pre>
+
+  <figure class="shot"><img src="screenshots/library.png" alt="swfbox library grid with stage-shaped cards, AS2/AS3 filters and a broken-file section"></figure>
+
+  <section class="grid">
+    <div class="card"><h3>Reads SWF itself</h3><p>FWS and zlib-compressed CWS headers, bit-packed stage size, fixed-point frame rate, XMP metadata and the tags that tell AS2 from AS3.</p></div>
+    <div class="card"><h3>Not an emulator</h3><p>Ruffle does the playing. swfbox is the missing library and launcher — and it never pretends otherwise.</p></div>
+    <div class="card"><h3>Offline by default</h3><p>One explicit <code>--fetch-ruffle</code> downloads the player once; after that the whole archive works with no network.</p></div>
+  </section>
+
+  <p class="note">The live demo loads Ruffle from unpkg, which is the only reason it can play in a browser.
+    Locally, <code>swfbox --fetch-ruffle</code> vendors it and nothing touches the network.</p>
+
+  <p class="foot">
+    <span>Demo archive: 10 synthetic SWFs, 8 readable, 2 deliberately broken.</span>
+    <a href="https://github.com/arifs122/swfbox/blob/main/README.md">README</a>
+    <a href="https://github.com/arifs122/swfbox/blob/main/LICENSE">MIT</a>
+  </p>
+</main>
+</body>
+</html>

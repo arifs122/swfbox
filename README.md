@@ -9,6 +9,8 @@
 
 `swfbox` reads SWF metadata itself (zero dependencies), builds a searchable offline index, and launches any file in Ruffle. It is a library and launcher, not an emulator.
 
+**Live demo:** [browse the demo archive and play a real SWF in your browser →](https://arifs122.github.io/swfbox/play.html)
+
 ```
 $ npx swfbox ~/old-flash
 Scanning /home/you/old-flash …
