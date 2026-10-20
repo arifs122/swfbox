@@ -1,0 +1,55 @@
+$ node bin/swfbox.js docs/demo/swfs --format text --no-color
+  swfbox docs/demo/swfs — 10 files (2 broken)
+      56 B  —                       broken    Corrupt Legacy.swf
+      48 B  320×240          18fps  AS2       Loading Loop.swf
+      40 B  —                       broken    LZMA Bundle.swf
+     706 B  550×400          24fps  AS2       Neon Bolt.swf
+     422 B  640×480          30fps  AS3       Pocket Quiz.swf
+      43 B  240×320          12fps  ?         Portrait Card.swf
+      31 B  100×100           6fps  AS2       Retro Pixel.swf
+     438 B  800×600          30fps  AS3       Space Cadet.swf
+      28 B  468×60           12fps  ?         Tiny Banner.swf
+     436 B  1280×720         25fps  AS3       Widescreen Intro.swf
+
+8 readable · 2 unreadable · 2.2 KB total
+
+$ node bin/swfbox.js inspect "docs/demo/swfs/Neon Bolt.swf" --no-color
+
+  swfbox inspect
+
+  docs/demo/swfs/Neon Bolt.swf
+
+  Stage         550 × 400 px
+                11000 × 8000 twips
+  Frame rate    24 fps
+  Frames        12
+  Signature     FWS (uncompressed)
+  SWF version   v10
+  Declared size 706 B
+  On disk       706 B
+  ActionScript  AS2
+  Background    #0b1020
+  Network       not declared
+
+  Tags
+  Parsed          6
+  Sprites         1
+  Shapes          1
+  Sounds          0
+  Video           0
+
+  Embedded metadata
+  Title           Neon Bolt
+  Creator         swfbox demo studio
+  Description     A tiny AS2 title card with a violet-to-cyan bolt. Generated, not downloaded.
+
+$ node bin/swfbox.js inspect "docs/demo/swfs/Corrupt Legacy.swf" --no-color
+
+  swfbox inspect
+
+  docs/demo/swfs/Corrupt Legacy.swf
+
+  ! Could not read this SWF
+  Could not decompress the CWS body (Z_DATA_ERROR)
+  Signature     CWS
+  Size          56 B

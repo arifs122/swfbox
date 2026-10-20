@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 296 472" width="296" height="472" role="img" aria-label="gitography terminal output">
+  <defs>
+    <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#151527"/>
+      <stop offset="100%" stop-color="#101020"/>
+    </linearGradient>
+    <clipPath id="window">
+      <rect x="0" y="0" width="296" height="472" rx="14"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#window)">
+    <rect width="296" height="472" fill="#0a0a12"/>
+    <rect width="296" height="38" fill="url(#chrome)"/>
+    <circle cx="20" cy="19" r="6" fill="#ff5f57"/>
+    <circle cx="40" cy="19" r="6" fill="#febc2e"/>
+    <circle cx="60" cy="19" r="6" fill="#28c840"/>
+    <text x="148" y="23" fill="#5b6079" font-size="12" text-anchor="middle" font-family="ui-monospace, Consolas, monospace">swfbox</text>
+    <g font-family="ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace" font-size="12" xml:space="preserve">
+  <text x="22" y="50" fill="#5b6079"> </text>
+  <text x="22" y="68" fill="#d7dbe8"><tspan>  swfbox inspect</tspan></text>
+  <text x="22" y="86" fill="#5b6079"> </text>
+  <text x="22" y="104" fill="#d7dbe8"><tspan>  docs\demo\swfs\Neon Bolt.swf</tspan></text>
+  <text x="22" y="122" fill="#5b6079"> </text>
+  <text x="22" y="140" fill="#d7dbe8"><tspan>  Stage         550 ├ù 400 px</tspan></text>
+  <text x="22" y="158" fill="#d7dbe8"><tspan>                11000 ├ù 8000 twips</tspan></text>
+  <text x="22" y="176" fill="#d7dbe8"><tspan>  Frame rate    24 fps</tspan></text>
+  <text x="22" y="194" fill="#d7dbe8"><tspan>  Frames        12</tspan></text>
+  <text x="22" y="212" fill="#d7dbe8"><tspan>  Signature     FWS (uncompressed)</tspan></text>
+  <text x="22" y="230" fill="#d7dbe8"><tspan>  SWF version   v10</tspan></text>
+  <text x="22" y="248" fill="#d7dbe8"><tspan>  Declared size 706 B</tspan></text>
+  <text x="22" y="266" fill="#d7dbe8"><tspan>  On disk       706 B</tspan></text>
+  <text x="22" y="284" fill="#d7dbe8"><tspan>  ActionScript  AS2</tspan></text>
+  <text x="22" y="302" fill="#d7dbe8"><tspan>  Background    #0b1020</tspan></text>
+  <text x="22" y="320" fill="#d7dbe8"><tspan>  Network       not declared</tspan></text>
+  <text x="22" y="338" fill="#5b6079"> </text>
+  <text x="22" y="356" fill="#d7dbe8"><tspan>  Tags</tspan></text>
+  <text x="22" y="374" fill="#d7dbe8"><tspan>  Parsed          6</tspan></text>
+  <text x="22" y="392" fill="#d7dbe8"><tspan>  Sprites         1</tspan></text>
+  <text x="22" y="410" fill="#d7dbe8"><tspan>  Shapes          1</tspan></text>
+  <text x="22" y="428" fill="#d7dbe8"><tspan>  Sounds          0</tspan></text>
+  <text x="22" y="446" fill="#d7dbe8"><tspan>  Video           0</tspan></text>
+    </g>
+  </g>
+  <rect x="0.5" y="0.5" width="295" height="471" rx="14" fill="none" stroke="#242438"/>
+</svg>

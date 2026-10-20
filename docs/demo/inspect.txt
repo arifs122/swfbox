@@ -1,0 +1,24 @@
+
+  swfbox inspect
+
+  docs\demo\swfs\Neon Bolt.swf
+
+  Stage         550 ├ù 400 px
+                11000 ├ù 8000 twips
+  Frame rate    24 fps
+  Frames        12
+  Signature     FWS (uncompressed)
+  SWF version   v10
+  Declared size 706 B
+  On disk       706 B
+  ActionScript  AS2
+  Background    #0b1020
+  Network       not declared
+
+  Tags
+  Parsed          6
+  Sprites         1
+  Shapes          1
+  Sounds          0
+  Video           0
+
